@@ -2,7 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import {backURL} from '../back_url.js';
 import cookie from 'react-cookies';
-
+import {Button} from 'react-bootstrap';
 class Profile extends React.Component{
     constructor(props){
         super(props);
@@ -76,30 +76,39 @@ class Profile extends React.Component{
         }
         else{
         return(
-            <div style={{textAlign:'center', marginTop:'10px'}}>
+            <div style={{textAlign:'center', marginTop:'4%', border:'2px solid black',width:'50%',marginLeft:'25%',backgroundColor:'lightyellow'}}>
                 <div>
-                    <img style={{background:'transparent'}} src={`${this.state.user.photo}`} height="200px" width="200px"/><br/>
-                <h3>{this.state.user.name}</h3><br/>
-                    <h3>Score : {this.state.user.score}</h3>
-                    <h3>CurrentDailyStreak : {this.state.user.dailyStreak}</h3>
-                    <h3>MaxWinningStream : {this.state.user.maxDailyStreak}</h3>
-                    <button onClick={()=>{this.setState({uploadPhoto:!this.state.uploadPhoto})}}>Upload New Photo</button>
-                    </div>
+               
+                    <img style={{background:'transparent',marginTop:'3%'}} src={`${this.state.user.photo}`} height="200px" width="200px"/><br/><br/>
+                <h1 style={{fontSize:'24px',color:'darkred'}}>{this.state.user.name}</h1><br/>
+                    <h3 style={{textAlign:'left',paddingLeft:'43%',fontSize:'20px'}}>Score : <span style={{color:'green'}}><b>{this.state.user.score}</b></span></h3>
+                    <h3 style={{textAlign:'left',paddingLeft:'43%',fontSize:'20px'}}>Current Daily Streak : <span style={{color:'green'}}><b>{this.state.user.dailyStreak}</b></span></h3>
+                    <h3 style={{textAlign:'left',paddingLeft:'43%',fontSize:'20px'}}>Max Winning Stream : <span style={{color:'green'}}><b>{this.state.user.maxDailyStreak}</b></span></h3>
+                    <br/>
+                    <div>
+                     
+                    <Button variant="primary" onClick={()=>{this.setState({uploadPhoto:!this.state.uploadPhoto})}}>Upload New Photo</Button>
                     <div hidden={!this.state.uploadPhoto}>
                         <div>
+                            <br/>
                             <input onChange={this.selected} type="file"/>
-                            <button onClick={this.upload}>Upload</button>
+                            <Button  variant="primary" onClick={this.upload}>Upload</Button>
                         </div>
-                    </div><br/><br/>
+                     
+                    </div>
+                    <br/><br/>
                     <div hidden={!this.state.zone}>
-                        <h3>Select Your Zone</h3>
+                        <br/>
+                        <h3 style={{textAlign:'left',paddingLeft:'20%',fontSize:'20px'}}>Select Your Zone</h3>
                         <select style={{display:'block',width:'10%',marginLeft:'40%'}} name="zone" id="zone">
                         <option value="North">North</option>
                         <option value="South">South</option>
                         <option value="West">West</option>
                         <option value="East">East</option>
                         </select>
-                        <button onClick={this.updateZone}>Update</button>
+                        <Button variant="primary" style={{display:'block',width:'10%',marginLeft:'52%'}} onClick={this.updateZone}>Update</Button>
+                    </div>
+                    </div>
                     </div>
             </div>
         )

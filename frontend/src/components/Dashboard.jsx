@@ -1,6 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import cookie from 'react-cookies';
+import {Dropdown,Button} from 'react-bootstrap'
 
 const {backURL} = require('../back_url');
 
@@ -36,8 +37,9 @@ class Dashboard extends React.Component{
         return lead_obj;
     }
 
-    zone_selected(){
-        const zone = document.getElementById("zone").value;
+    zone_selected(event){
+        console.log(event.target.id);
+        const zone = event.target.id;
         if(zone === "All"){
             this.setState({zone:zone,filtered_user:this.state.users});
         }
@@ -95,16 +97,16 @@ class Dashboard extends React.Component{
                     return ("");
                 if(user._id === this.state.me._id){
                     return(
-                        <div style={{border:'1px solid black',margin:'10px 30%',background:'red'}}>
-                            <img style={{padding:'3px'}} src={`${user.photo}`} height='50px' width='50px'/>
+                        <div style={{border:'1px solid black',margin:'10px 30%',background:'lightblue'}}>
+                            <img style={{padding:'3px'}} src={`${user.photo}`} height='50px' width='50px'/><br/>
                             <h4>{`${user.name}`}</h4>
                             <h4>{`${user.score}`}</h4>
                         </div>
                     )
                 }
                 return(
-                    <div style={{border:'1px solid black',margin:'10px 30%',background:'yellow'}}>
-                        <img style={{padding:'3px'}} src={`${user.photo}`} height='50px' width='50px'/>
+                    <div style={{border:'1px solid black',margin:'10px 30%',background:'lightyellow'}}>
+                        <img style={{padding:'3px'}} src={`${user.photo}`} height='50px' width='50px'/><br/>
                         <h4>{`${user.name}`}</h4>
                         <h4>{`${user.score}`}</h4>
                     </div>
@@ -121,24 +123,42 @@ class Dashboard extends React.Component{
                 return(
                     <div style={{textAlign:"center"}}>
                     <div style={{textAlign:"center"}}>
-                    <h3>Select Your Zone</h3>
-                    <select style={{display:'block',width:'10%',marginLeft:'40%'}} name="zone" id="zone" onChange={this.zone_selected}>
+                    {/* <select style={{display:'block',width:'10%',marginLeft:'40%'}} name="zone" id="zone" onChange={this.zone_selected}>
+                        <option value="All">All</option>
                         <option value="North">North</option>
                         <option value="South">South</option>
                         <option value="West">West</option>
                         <option value="East">East</option>
-                        <option value="All">All</option>
-                    </select>
+                    </select> */}
+                    <Dropdown style={{marginTop:'2%'}}>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic" style={{width:'20%',height:'10%'}}>
+                            <span><b>Select a Zone</b></span>
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            <Dropdown.Item id="North" onClick={this.zone_selected}>North</Dropdown.Item>
+                            <Dropdown.Item id="South" onClick={this.zone_selected}>South</Dropdown.Item>
+                            <Dropdown.Item id="West" onClick={this.zone_selected}>East</Dropdown.Item>
+                            <Dropdown.Item id="East" onClick={this.zone_selected}>West</Dropdown.Item>
+                            <Dropdown.Item id="All" onClick={this.zone_selected}>All Zone</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     </div>
+                    <br/>
                     <div hidden={dont_show}>
-                        <h1 style={{color:'red'}}>Leader Board</h1>
-                        <h2 style={{color:'green'}} hidden={!you_topper}>Congrats you are a leader in your zone</h2>
-                        <img src={`${lead_obj.photo}`} height='100px' width='100px'/>
-                        <h3>{`${lead_obj.name}`}</h3>
-                        <h3>{`${lead_obj.score}`}</h3>
-                        <h1 style={{color:'red'}}>Others</h1>
+                        <h1 style={{color:'black',fontSize:'40px'}}><b>Leader Board</b></h1>
+                        <h2 style={{color:'red'}} hidden={!you_topper}>Congrats you are a leader in your zone</h2>
+                        <div style={{border:'1px solid black',margin:'10px 30%',background:'lightpink'}}>
+                        <img src={`${lead_obj.photo}`} height='80px' width='80px' style={{marginTop:'3%'}}/>
+                        <br/><br/>
+                        <h3 style={{fontSize:'24px',color:'black'}}><b>{`${lead_obj.name}`}</b></h3>
+                        <h3><b>{`${lead_obj.score}`}</b></h3>
+                        </div>
+                        <br/>
+                        <h1 style={{color:'black',fontSize:'40px'}}><b>Others</b></h1>
                     </div>
                     <div style={{textAlign:'center'}} hidden={!dont_show}>
+                        <br/><br/>
                         <h1>No One till now from this zone</h1>
                     </div>
                     {UI}
