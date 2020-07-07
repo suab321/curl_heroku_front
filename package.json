@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/suab321/curl_heroku_front.git"
   },
+  
   "keywords": [],
   "author": "",
   "license": "ISC",
