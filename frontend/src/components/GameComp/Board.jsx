@@ -10,7 +10,7 @@ class Board extends React.Component{
         super(props);
         this.state={
             matrix_data : [],
-            board_size : 5,            
+            board_size : 6,            
             solved:false,
             all_played:false
         }
@@ -35,9 +35,13 @@ class Board extends React.Component{
     }
 
     async submit(){
-        if(abhi(this.my_matrix_data, this.state.board_size)){
+        const res = abhi(this.my_matrix_data, this.state.board_size)
+        if(res){
             this.props.updateScore();
             this.setState({solved:true});
+        }
+        else{
+            alert("Oops your solution is wrong");
         }
     }
 
