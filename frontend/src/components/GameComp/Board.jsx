@@ -80,6 +80,7 @@ class Board extends React.Component{
                 if(value!==null){
                     document.getElementById(String(index)).value = value;
                     document.getElementById(String(index)).readOnly = true;
+                    document.getElementById(String(index)).style.color = "green";
                 }
             });
         }
