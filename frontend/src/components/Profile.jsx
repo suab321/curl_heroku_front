@@ -36,7 +36,12 @@ class Profile extends React.Component{
 
     async updateZone(){
         console.log(document.getElementById("zone").value);
-        await Axios.get(`${backURL}/api/update_zone?zone=${document.getElementById("zone").value}`,{headers:{Authorization: `Bearer ${cookie.load('token')}`}});
+        try{
+            await Axios.get(`${backURL}/api/update_zone?zone=${document.getElementById("zone").value}`,{headers:{Authorization: `Bearer ${cookie.load('token')}`}});
+        }catch(err){
+            alert("Reload Your Page");
+            cookie.save('token',"");
+        }
         alert("zone is updated");
         this.setState({zone:false});
     }
@@ -58,7 +63,10 @@ class Profile extends React.Component{
             if(res.data.zone === "")
                 zone=true;
             this.setState({user:res.data,uploadPhoto:false,zone:zone,wait:false});
-        });
+        }).catch(err=>{
+            alert("Reload Your Page");
+            cookie.save("token","");
+        })
     }
 
     componentDidMount(){

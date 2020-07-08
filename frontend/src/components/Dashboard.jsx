@@ -70,12 +70,14 @@ class Dashboard extends React.Component{
         Axios.get(`${backURL}/api/get_user`, {headers:{Authorization: `Bearer ${cookie.load('token')}`}}).then(res=>{
             this.setState({me:res.data});
         }).catch(err=>{
-            this.setState({redirect:true})
+            cookie.save('token',"");
+            alert("Reload Your Page");
         })
         Axios.get(`${backURL}/api/all_user`, {headers:{Authorization: `Bearer ${cookie.load('token')}`}}).then(res=>{
             this.setState({users:res.data,filtered_user:res.data,wait:false});
         }).catch(err=>{
-            this.setState({redirect:true});
+            cookie.save('token',"");
+            alert("Reload Your Page");
         })
     }
     render(){

@@ -25,12 +25,16 @@ class App extends React.Component{
   }
 
   componentDidMount(){
-    Axios.get(`${backURL}/api/get`,{withCredentials:true}).then(res=>{
-      cookie.save("token",res.data,{path:"/"});
+    if(cookie.load('token') !== "")
       this.setState({isLogin:true,wait:false});
-    }).catch(err=>{
-      this.setState({wait:false})
-    })
+    else{
+      Axios.get(`${backURL}/get`,{withCredentials:true}).then(res=>{
+        cookie.save("token",res.data,{path:"/"});
+        this.setState({isLogin:true,wait:false});
+      }).catch(err=>{
+        this.setState({wait:false})
+      })
+    }
   }
 
   logout(){

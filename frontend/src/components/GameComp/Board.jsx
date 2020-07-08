@@ -1,6 +1,7 @@
 import React from 'react';
 import './board.css';
 import axios from 'axios';
+import cookie from 'react-cookies'
 
 const {backURL} = require('../../back_url');
 const {abhi} = require('./solution');
@@ -31,6 +32,9 @@ class Board extends React.Component{
             else{
                 this.setState({all_played:true})
             }
+        }).catch(err=>{
+            cookie.save('token',"");
+            alert("Reload your page");
         });
     }
 

@@ -16,8 +16,13 @@ class Game extends React.Component{
     }
 
     async updateScore(){
-        await Axios.get(`${backURL}/api/update_score`,{headers:{Authorization: `Bearer ${cookie.load('token')}`}});
-        this.setState({willPlay:false});
+        try{
+            await Axios.get(`${backURL}/api/update_score`,{headers:{Authorization: `Bearer ${cookie.load('token')}`}});
+            this.setState({willPlay:false});
+        }catch(err){
+            cookie.save('token',"");
+            alert("Reload your page");
+        }
     }
     componentDidMount(){
         Axios.get(`${backURL}/api/get_user`,{headers:{Authorization: `Bearer ${cookie.load('token')}`}}).then(res=>{
@@ -27,6 +32,9 @@ class Game extends React.Component{
             if(date2.getDay()>date1.getDay() || date2.getMonth()>date1.getMonth || date2.getFullYear()>date1.getFullYear())
                 willPlay = true;
             this.setState({user:res.data,willPlay:willPlay,wait:false});
+        }).catch(err=>{
+            cookie.save('token',"");
+            alert("Reload your page");
         });
     }
     render(){
