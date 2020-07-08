@@ -11,6 +11,7 @@ class Login extends React.Component{
         this.state={
             register:false,
             toggle_button:'Click to Register',
+            toggle_display:'Have an Account',
             redirect:false
         }
         this.email = React.createRef();
@@ -25,16 +26,20 @@ class Login extends React.Component{
 
     toggle(){
         if(this.state.register){
-            this.setState({register:false,toggle_button:'Click to Register'});
+            this.setState({register:false,toggle_button:'Click to Register', toggle_display:"Dont have an Account"});
         }
         else
-            this.setState({register:true, toggle_button:"Click to Login"})
+            this.setState({register:true, toggle_button:"Click to Login", toggle_display:"Have an Account"});
     }
 
     login(){
         const body={
             email:this.email.current.value,
             password:this.password.current.value
+        }
+        if(!body.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+            alert("Enter a valid email");
+            return;
         }
         console.log(body);
         Axios.post(`${backURL}/auth/login`,body).then(res=>{
@@ -55,6 +60,14 @@ class Login extends React.Component{
         if(password !== cpassword){
             alert("passwords dont match !");
         }
+        if(!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+            alert("Enter a valid email address");
+            return;
+        }
+        if(password === ''){
+            alert("Enter valid password");
+            return;
+        }
         else{
             const body={
                 email,password,name
@@ -70,18 +83,6 @@ class Login extends React.Component{
         }
     }
     render(){
-        // return(
-        //     <div>
-        //         <div style={{textAlign:'center',border:'1px solid black', width:'40%', height:'500px',margin:'10% 30%'}}>
-        //             <div style={{textAlign:'center'}}>
-        //                 <input type='text' ref={this.email} placeholder="Enter your email Id"/>
-
-        //             </div>
-                
-        //             {/* <a href={`${backURL}/authentication/google_login`}><Button color="secondary" style={{marginTop:'224px',marginLeft:'138px',color:'blue'}}>Google</Button></a> */}
-        //         </div>
-        //     </div>
-        // )
         if(this.state.redirect){
             return(
                 <Redirect to='/profile'/>
@@ -91,7 +92,7 @@ class Login extends React.Component{
             return(
                 <div style={{textAlign:"center"}}>
                 <div>
-                <a href={`${backURL}/authentication/google_login`}><Button color="secondary" style={{marginTop:'3px',marginRight:'10%',color:'blue'}}>Google</Button></a>
+                {/* <a href={`${backURL}/authentication/google_login`}><Button color="secondary" style={{marginTop:'3px',marginRight:'10%',color:'blue'}}>Google</Button></a> */}
                     <div class='form'>
                     <div>
                     <label style={{fontSize: "2em"}}>LOGIN</label><br/><br/><br/>
@@ -106,9 +107,10 @@ class Login extends React.Component{
                     <input hidden={!this.state.register} type="password" name="cpassword" required ref={this.cpassword}/><br/>
                     <Button hidden={this.state.register} style={{cursor: "pointer",fontSize: "1em"}}onClick={this.login}>Login</Button><br/>
                     <Button hidden={!this.state.register} style={{cursor: "pointer",fontSize: "1em"}}onClick={this.register}>Register</Button><br/>
-                    <p style={{fontFamily: "sans-serif"}}>Dont Have an Account!</p>
+                    <p style={{fontFamily: "sans-serif"}}>{this.state.toggle_display}</p>
                     </div>
-                    <Button onClick={this.toggle}>{this.state.toggle_button}</Button>
+                    <Button onClick={this.toggle} style={{marginRight:'10px'}}>{this.state.toggle_button}</Button>
+                    <Button hidden={this.state.register} href={`${backURL}/authentication/google_login`}>Google Login</Button>
                     </div>
                 </div>
                 <style jsx>
@@ -121,8 +123,8 @@ class Login extends React.Component{
                     margin-top: 1em;
                     margin-right: 10em;
                     text-align: center;
-                    padding-top: 1em;
-                    padding-bottom: 1em;
+                    padding-top: 20px;
+                    padding-bottom: 20px;
                     background-color: rgb(149,78,87);
                 }
                 label{
@@ -130,7 +132,7 @@ class Login extends React.Component{
                     font-family: sans-serif;
                 }
                 input{
-                    font-size: 1.5em;
+                    font-size: 0.5em;
                     text-align: center;
                 }
                 `}
